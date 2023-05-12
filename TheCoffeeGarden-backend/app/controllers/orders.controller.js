@@ -4,18 +4,21 @@ const ApiError = require("../api-error");
 
 // Create and Save a new Order
 exports.create = async (req, res, next) => {
+    const {orderItems, user, totalPrice, shippingAddress, phone} = req.body;
     if (!req.body){
         return next(new ApiError(400, "Data can not be empty"));
     }
-    try {
         const orderService = new OrderService(MongoDB.client);
-        const newOrder = await orderService.create(req.body);
-        return res.send(newOrder);
-    } catch (error) {
-        return next (
-            new ApiError(500, "An error occurred while creating order")
-        );
-    }
+        const newOrderItem = await orderService.createOrderItem(req.body.orderItems);
+        // return newOrderItem._id;
+    res.send(newOrderItem);
+    // try {
+        
+    // } catch (error) {
+    //     return next (
+    //         new ApiError(500, "An error occurred while creating order")
+    //     );
+    // }
 };
 
 

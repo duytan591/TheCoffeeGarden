@@ -38,22 +38,6 @@
         <p v-else>Không có sản phẩm nào.</p>
       </div>
     </div>
-    <!-- <div class="mt-3">
-      <div v-if="activeProduct">
-        <h4>Chi tiết sản phẩm</h4>
-        <ProductCard :product="activeProduct"/>
-        <router-link
-          :to="{
-            name: 'product.edit',
-            params: { id: activeProduct._id },
-          }"
-        >
-          <span class="mt-2 badge text-bg-warning">
-            <i class="fas fa-pen-to-square"></i> Hiệu chỉnh
-          </span>
-        </router-link>
-      </div>
-    </div> -->
   </div>
 </template>
 <script>
@@ -154,18 +138,10 @@ export default {
         console.log(error);
       }
     },
-    // async getUser() {
-    //   try {
-    //     this.user = await UserService.secret();        
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
   },
   mounted() {
     this.refreshList();
     this.getCategory();
-    // this.getUser();
   },
 };
 </script>

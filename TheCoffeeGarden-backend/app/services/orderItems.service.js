@@ -16,11 +16,13 @@ class OrderItemService {
         return orderItem;
     }
 
-    async create(payload) {
+    async createOrderItem(payload) {
         const orderItem = this.extractOrderItemData(payload);
         const result = await this.OrderItems.findOneAndUpdate(
             orderItem,
-            { $set: {}},
+            { $set: {
+                 
+            }},
             { returnDocument: "after", upsert:true});
         return result.value;
     }

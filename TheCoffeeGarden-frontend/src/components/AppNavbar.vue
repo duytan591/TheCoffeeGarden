@@ -28,7 +28,7 @@
             </ul>
           </li>
         </ul>
-        <button class="btn btn-outline-dark">
+        <button class="btn btn-outline-dark" @click="goToCartManager">
           <i class="bi-cart-fill me-1 fas fa-cart-shopping"></i>
           Cart
         </button>
@@ -68,7 +68,7 @@
           Manage
         </router-link>
       </div>
-      <button @click="isAdmin">Test</button>
+      <!-- <button @click="!isAuth">Test</button> -->
     </div>
   </nav>
 </template>
@@ -78,24 +78,24 @@ import UserService from "../services/user.service";
 export default {
   data() {
     return {
-      user:''
+      user: "",
     };
   },
   methods: {
-    isAuth(){
-      const check = sessionStorage.getItem('user-info');
-      if(check){
+    isAuth() {
+      const check = sessionStorage.getItem("user-info");
+      if (check) {
         return true;
       }
       return false;
     },
 
-    isAdmin(){
-      const checkAd = sessionStorage.getItem('user-role');
-      console.log(checkAd)
-      if(checkAd == 'true'){
+    isAdmin() {
+      const checkAd = sessionStorage.getItem("user-role");
+      // console.log(checkAd)
+      if (checkAd == "true") {
         return true;
-      } else if(checkAd == 'false'){
+      } else if (checkAd == "false") {
         return false;
       }
       return null;
@@ -110,6 +110,16 @@ export default {
         console.log(error);
       }
     },
+    goToCartManager(){
+      const check = sessionStorage.getItem("user-info");
+      if (!check) {
+        confirm('You are not login!')
+        this.$router.push({ name: "login" });
+      }
+      else if(check){
+        this.$router.push({ name: "cart" });
+      }
+    }
   },
 };
 </script>

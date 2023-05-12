@@ -60,6 +60,11 @@ const routes = [
     name:"order.manager",
     component:() => import("../views/OrderManager.vue"),
   },
+  {
+    path:"/cart",
+    name:"cart",
+    component: () => import("../views/CartPage.vue"),
+  }
 ];
 
 const router = createRouter({

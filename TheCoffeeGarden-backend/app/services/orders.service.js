@@ -2,8 +2,21 @@ const { ObjectId } = require("mongodb");
 class OrderService {
     constructor(client) {
         this.Order = client.db().collection("orders");
+        this.OrderItems = client.db().collection("orderitems");
     }
     // Định nghĩa các phương thức truy xuất CSDL sử dụng mongodb API
+    extractOrderItemData(payload) {
+        const orderItem = {
+            product:payload.product,
+            quantity:payload.quantity,
+        };
+        // Remove undefined fields
+        Object.keys(orderItem).forEach(
+            (key) => orderItem[key] === undefined && delete orderItem[key]
+        );
+        return orderItem;
+    }
+
     extractOrderData(payload) {
         const order = {
             orderItems: payload.orderItems,
@@ -20,12 +33,24 @@ class OrderService {
         );
         return order;
     }
-    async create(payload) {
+
+    async createOrderItem(payload) {
+        const orderItem = this.extractOrderItemData(payload);
+        const result = await this.OrderItems.findOneAndUpdate(
+            orderItem,
+            { $set: {}},
+            { returnDocument: "after", upsert:true});
+        return result.value;
+    }
+
+    async createOrder(payload) {
         const order = this.extractOrderData(payload);
         const result = await this.Order.findOneAndUpdate(
             order,
             { $set: {
-                status: this.order.status === true
+                status: this.order.status === true,
+                orderItems: this.orderItems[payload],
+                dateOrdered: this.dateOrdered == new Date.now(),
             }},
             { returnDocument: "after", upsert:true});
         return result.value;
@@ -83,14 +108,14 @@ class OrderService {
 
     async retrieveAll(){
         const result = await this.Order.aggregate([
-            // {
-            //     $lookup:{
-            //         from:"orderitems",
-            //         localField: "orderItems",
-            //         foreignField: "_id",
-            //         as: "orderItems"
-            //     },
-            // },
+            {
+                $lookup:{
+                    from:"orderitems",
+                    localField: "orderItems",
+                    foreignField: "_id",
+                    as: "orderItems"
+                },
+            },
             {
                 $lookup: {
                   from: "users",

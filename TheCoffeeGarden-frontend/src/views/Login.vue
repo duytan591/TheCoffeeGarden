@@ -22,7 +22,6 @@ export default {
         const result =  await UserService.signIn(data.user);
         sessionStorage.setItem("user-info",JSON.stringify(result));
         sessionStorage.setItem("user-role",JSON.stringify(result.role));
-        console.log(result);
         await this.$router.push({name: 'coffeegarden'});
         location.reload();
       } catch (error) {

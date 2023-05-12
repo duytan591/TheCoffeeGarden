@@ -20,6 +20,7 @@ export default {
     @click="updateActiveIndex(index)"
     >
   <div class="card h-100">
+    <div class="badge bg-dark text-white position-absolute" v-if="product.favorite" style="top: 0.5rem; right: 0.5rem">Most Favorite</div>
     <!-- Product image-->
     <img
       class="card-img-top"
@@ -31,7 +32,7 @@ export default {
         <!-- Product name-->
         <h5 class="fw-bolder">{{ product.title }}</h5>
         <!-- Product price-->
-        {{ product.price }}$
+        ${{ product.price }}
       </div>
     </div>
     <!-- Product actions-->
